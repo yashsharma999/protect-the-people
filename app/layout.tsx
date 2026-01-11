@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { DM_Sans, Nothing_You_Could_Do } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 
 const dmSans = DM_Sans({ 
@@ -24,7 +25,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${dmSans.variable} ${scriptFont.variable}`}>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        {children}
+        {/* PhonePe Checkout Script */}
+        <Script 
+          src="https://mercury.phonepe.com/web/bundle/checkout.js" 
+          strategy="lazyOnload"
+        />
+      </body>
     </html>
   )
 }
