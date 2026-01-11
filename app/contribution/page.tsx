@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -32,10 +32,89 @@ interface VolunteerFormData {
 
 const donationAmounts = ['500', '1000', '2500', '5000', '10000'];
 
-export default function ContributionPage() {
+function ContributionContent() {
   const searchParams = useSearchParams();
   const activeTab = searchParams.get('tab') || 'donate';
 
+  return (
+    <>
+      {/* Tab Navigation */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="flex justify-center mb-10"
+      >
+        <div className="inline-flex bg-white rounded-full p-1.5 border border-gray-200 shadow-sm">
+          <Link
+            href="/contribution?tab=donate"
+            className={`flex items-center gap-2 px-6 py-3 rounded-full text-base font-medium transition-all duration-300 ${
+              activeTab === 'donate'
+                ? 'bg-[#1a2e35] text-white shadow-md'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <Heart size={18} />
+            Donate
+          </Link>
+          <Link
+            href="/contribution?tab=volunteer"
+            className={`flex items-center gap-2 px-6 py-3 rounded-full text-base font-medium transition-all duration-300 ${
+              activeTab === 'volunteer'
+                ? 'bg-[#1a2e35] text-white shadow-md'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <Users size={18} />
+            Volunteer
+          </Link>
+        </div>
+      </motion.div>
+
+      {/* Form Container */}
+      <motion.div
+        key={activeTab}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="bg-white rounded-3xl border border-gray-100 shadow-lg p-8 md:p-10"
+      >
+        {activeTab === 'donate' ? <DonationForm /> : <VolunteerForm />}
+      </motion.div>
+    </>
+  );
+}
+
+function ContributionFallback() {
+  return (
+    <>
+      {/* Tab Navigation Skeleton */}
+      <div className="flex justify-center mb-10">
+        <div className="inline-flex bg-white rounded-full p-1.5 border border-gray-200 shadow-sm">
+          <div className="flex items-center gap-2 px-6 py-3 rounded-full bg-gray-100 animate-pulse w-28 h-12" />
+          <div className="flex items-center gap-2 px-6 py-3 rounded-full bg-gray-50 animate-pulse w-32 h-12" />
+        </div>
+      </div>
+      {/* Form Container Skeleton */}
+      <div className="bg-white rounded-3xl border border-gray-100 shadow-lg p-8 md:p-10">
+        <div className="animate-pulse space-y-6">
+          <div className="flex flex-col items-center">
+            <div className="w-14 h-14 bg-gray-200 rounded-full mb-4" />
+            <div className="h-8 bg-gray-200 rounded w-48 mb-2" />
+            <div className="h-4 bg-gray-100 rounded w-64" />
+          </div>
+          <div className="space-y-4">
+            <div className="h-12 bg-gray-100 rounded-xl" />
+            <div className="h-12 bg-gray-100 rounded-xl" />
+            <div className="h-12 bg-gray-100 rounded-xl" />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default function ContributionPage() {
   return (
     <div className="font-sans text-slate-900 bg-gray-50 min-h-screen flex flex-col">
       <Navbar forceScrolled />
@@ -63,49 +142,9 @@ export default function ContributionPage() {
             </p>
           </motion.div>
 
-          {/* Tab Navigation */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="flex justify-center mb-10"
-          >
-            <div className="inline-flex bg-white rounded-full p-1.5 border border-gray-200 shadow-sm">
-              <Link
-                href="/contribution?tab=donate"
-                className={`flex items-center gap-2 px-6 py-3 rounded-full text-base font-medium transition-all duration-300 ${
-                  activeTab === 'donate'
-                    ? 'bg-[#1a2e35] text-white shadow-md'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <Heart size={18} />
-                Donate
-              </Link>
-              <Link
-                href="/contribution?tab=volunteer"
-                className={`flex items-center gap-2 px-6 py-3 rounded-full text-base font-medium transition-all duration-300 ${
-                  activeTab === 'volunteer'
-                    ? 'bg-[#1a2e35] text-white shadow-md'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <Users size={18} />
-                Volunteer
-              </Link>
-            </div>
-          </motion.div>
-
-          {/* Form Container */}
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="bg-white rounded-3xl border border-gray-100 shadow-lg p-8 md:p-10"
-          >
-            {activeTab === 'donate' ? <DonationForm /> : <VolunteerForm />}
-          </motion.div>
+          <Suspense fallback={<ContributionFallback />}>
+            <ContributionContent />
+          </Suspense>
         </div>
       </main>
       <Footer />
