@@ -13,12 +13,15 @@
     "clsx": "^2.1.1",
     "cobe": "^0.6.5",
     "framer-motion": "^12.25.0",
+    "google-auth-library": "^10.5.0",
+    "google-spreadsheet": "^5.0.2",
     "lucide-react": "^0.562.0",
     "motion": "^12.25.0",
     "next": "^16.1.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.71.0",
+    "resend": "^6.7.0",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {

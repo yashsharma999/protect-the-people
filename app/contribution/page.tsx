@@ -129,9 +129,16 @@ function DonationForm() {
   const selectedAmount = watch('amount');
 
   const onSubmit = async (data: DonationFormData) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log('Donation submitted:', data);
+    const response = await fetch('/api/donation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to submit donation');
+    }
   };
 
   if (isSubmitSuccessful) {
@@ -329,9 +336,16 @@ function VolunteerForm() {
   } = useForm<VolunteerFormData>();
 
   const onSubmit = async (data: VolunteerFormData) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log('Volunteer application submitted:', data);
+    const response = await fetch('/api/volunteer', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to submit application');
+    }
   };
 
   if (isSubmitSuccessful) {
