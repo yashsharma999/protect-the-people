@@ -13,31 +13,7 @@ export const Footer: React.FC = () => {
         {/* Interactive 3D Globe */}
         <div className="flex justify-center mb-10 md:mb-20 relative">
           <div className="w-[18rem] h-[18rem] md:w-[36rem] md:h-[36rem] lg:w-[44rem] lg:h-[44rem] relative flex items-center justify-center">
-             <Globe 
-               className="opacity-90"
-               config={{
-                 width: 1000,
-                 height: 1000,
-                 devicePixelRatio: 2,
-                 phi: 0,
-                 theta: 0.3,
-                 dark: 1,
-                 diffuse: 1.2,
-                 mapSamples: 16000,
-                 mapBrightness: 6,
-                 baseColor: [0.13, 0.15, 0.2],
-                markerColor: [0.55, 0.69, 0.87],
-                glowColor: [0.55, 0.69, 0.87],
-                markers: [
-                  { location: [28.6, 77.2], size: 0.1 },   // New Delhi
-                 
-                  { location: [22.6, 88.4], size: 0.07 },  // Kolkata
-                  
-                  { location: [18.5, 73.9], size: 0.04 },  // Pune
-                ],
-                 onRender: () => {},
-               }}
-             />
+          <Globe className="top-28" />
              
              <motion.span 
                initial={{ opacity: 0.8 }}
@@ -52,8 +28,8 @@ export const Footer: React.FC = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end pt-8 gap-4">
           <div className="flex flex-col md:flex-row gap-2 md:gap-6 text-sm text-gray-500">
-            <span>ProtectThePeople, 2026. All rights reserved</span>
-            <a href="#" className="hover:text-blue-500 transition-colors">Privacy Policy</a>
+            <span className='font-semibold'>ProtectThePeople Foundation, 2026. All rights reserved</span>
+            {/* <a href="#" className="hover:text-blue-500 transition-colors">Privacy Policy</a> */}
           </div>
           
           <div className="flex gap-4 self-start md:self-auto">

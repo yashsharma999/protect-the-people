@@ -1,14 +1,31 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Heart, Menu, X } from 'lucide-react';
+import { Heart, Menu, X, Phone, Mail } from 'lucide-react';
 import { Button } from './ui/Button';
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
 
-export const Navbar: React.FC = () => {
-  const [isHeroSection, setIsHeroSection] = useState(true);
+interface NavbarProps {
+  forceScrolled?: boolean;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ forceScrolled = false }) => {
+  const [isHeroSection, setIsHeroSection] = useState(!forceScrolled);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    // If forceScrolled is true, always show the scrolled/white navbar
+    if (forceScrolled) {
+      setIsHeroSection(false);
+      return;
+    }
+
     const handleScroll = () => {
       // Switch theme when the user scrolls past the hero section (viewport height)
       // We subtract a buffer (80px) so the transition happens just as the next section hits the navbar
@@ -20,7 +37,7 @@ export const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Initial check on mount
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [forceScrolled]);
 
   // Theme Styles
   // Hero: Dark glass, consistent, no change on minor scrolls
@@ -34,10 +51,6 @@ export const Navbar: React.FC = () => {
   const subTextClass = isHeroSection ? "text-white/60 hover:text-white" : "text-black/60 hover:text-black";
   
   // Component specific styles
-  const logoBoxClass = isHeroSection 
-    ? "bg-white/5 border-white/20 shadow-[0_0_10px_rgba(255,255,255,0.1)]"
-    : "bg-black/5 border-black/10 shadow-none";
-    
   const dividerClass = isHeroSection ? "bg-white/20" : "bg-black/10";
   
   const donateBtnClass = isHeroSection
@@ -77,9 +90,27 @@ export const Navbar: React.FC = () => {
 
         {/* Right Side Actions - Desktop */}
         <div className="hidden md:flex items-center">
-          <a href="#contact" className={`text-base font-medium px-5 transition-colors duration-500 ${contactBtnClass}`}>
-            Contact us
-          </a>
+          <Menubar className="border-none bg-transparent shadow-none">
+            <MenubarMenu>
+              <MenubarTrigger className={`text-base font-medium px-5 transition-colors duration-500 cursor-pointer bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent ${contactBtnClass}`}>
+                Contact us
+              </MenubarTrigger>
+              <MenubarContent className="bg-[#1a1a1a] border border-white/10 rounded-xl min-w-[280px]">
+                <MenubarItem className="flex items-center gap-3 px-4 py-3 cursor-pointer focus:bg-white/10 focus:text-white">
+                  <Phone size={18} className="text-white/70" />
+                  <a href="tel:+918630302979" className="text-white">
+                    +91 8630302979
+                  </a>
+                </MenubarItem>
+                <MenubarItem className="flex items-center gap-3 px-4 py-3 cursor-pointer focus:bg-white/10 focus:text-white">
+                  <Mail size={18} className="text-white/70" />
+                  <a href="mailto:protectthepeopleindia@gmail.com" className="text-white">
+                    protectthepeopleindia@gmail.com
+                  </a>
+                </MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+          </Menubar>
           
           {/* Vertical Divider */}
           <div className={`h-14 w-px mx-1 transition-colors duration-500 ${dividerClass}`}></div>
@@ -114,7 +145,20 @@ export const Navbar: React.FC = () => {
             </a>
           ))}
           <div className="h-px w-full bg-white/10 my-4"></div>
-          <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-white/80 text-2xl font-medium">Contact us</a>
+          
+          {/* Mobile Contact Info */}
+          <div className="space-y-4">
+            <p className="text-white/60 text-lg font-medium">Contact us</p>
+            <a href="tel:+918630302979" className="flex items-center gap-3 text-white/80 hover:text-white transition-colors">
+              <Phone size={20} />
+              <span>+91 8630302979</span>
+            </a>
+            <a href="mailto:protectthepeopleindia@gmail.com" className="flex items-center gap-3 text-white/80 hover:text-white transition-colors">
+              <Mail size={20} />
+              <span className="break-all">protectthepeopleindia@gmail.com</span>
+            </a>
+          </div>
+          
           <Button variant="outline" className="w-full justify-center border-white/30 text-white hover:bg-white hover:text-black mt-4 py-5 text-lg">
             <Heart size={20} className="mr-2" />
             Donate
