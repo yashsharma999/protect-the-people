@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { Utensils, GraduationCap, HandHeart } from 'lucide-react';
 import { Button } from './ui/Button';
 
@@ -8,18 +9,21 @@ const options = [
     title: "Donate for education",
     desc: "Help children access quality education by providing books, school supplies, and learning materials to underserved communities.",
     button: "Donate now",
+    href: "/contribution?tab=donate",
   },
   {
     icon: <Utensils size={28} />,
     title: "Provide food aid",
     desc: "Your contribution helps deliver nutritious meals and essential food supplies to families in need. Every donation makes a difference.",
     button: "Support a family",
+    href: "/contribution?tab=donate",
   },
   {
     icon: <HandHeart size={28} />,
     title: "Volunteer with us",
     desc: "We welcome volunteers from legal, public sector, or any background. Share your expertise and time to help amplify voices that need to be heard.",
     button: "Become a volunteer",
+    href: "/contribution?tab=volunteer",
   },
 ];
 
@@ -39,9 +43,11 @@ export const HowToHelp: React.FC = () => {
               <p className="text-gray-500 text-lg mb-10 flex-grow leading-relaxed">
                 {opt.desc}
               </p>
-              <Button variant="ghost" className="rounded-full border-gray-200 group-hover:bg-black group-hover:text-white group-hover:border-black transition-all text-base px-8 py-3">
-                {opt.button}
-              </Button>
+              <Link href={opt.href}>
+                <Button variant="ghost" className="rounded-full border-gray-200 group-hover:bg-black group-hover:text-white group-hover:border-black transition-all text-base px-8 py-3">
+                  {opt.button}
+                </Button>
+              </Link>
             </div>
           ))}
         </div>

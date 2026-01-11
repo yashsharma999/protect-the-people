@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Heart, Menu, X, Phone, Mail } from 'lucide-react';
 import { Button } from './ui/Button';
 import {
@@ -115,10 +116,13 @@ export const Navbar: React.FC<NavbarProps> = ({ forceScrolled = false }) => {
           {/* Vertical Divider */}
           <div className={`h-14 w-px mx-1 transition-colors duration-500 ${dividerClass}`}></div>
           
-          <button className={`group flex items-center gap-2 text-base font-medium px-5 py-2 transition-colors duration-500 ${donateBtnClass}`}>
+          <Link 
+            href="/contribution?tab=donate"
+            className={`group flex items-center gap-2 text-base font-medium px-5 py-2 transition-colors duration-500 ${donateBtnClass}`}
+          >
             <Heart size={20} className="transition-transform duration-300 group-hover:scale-110" />
             Donate
-          </button>
+          </Link>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -159,10 +163,12 @@ export const Navbar: React.FC<NavbarProps> = ({ forceScrolled = false }) => {
             </a>
           </div>
           
-          <Button variant="outline" className="w-full justify-center border-white/30 text-white hover:bg-white hover:text-black mt-4 py-5 text-lg">
-            <Heart size={20} className="mr-2" />
-            Donate
-          </Button>
+          <Link href="/contribution?tab=donate" onClick={() => setMobileMenuOpen(false)}>
+            <Button variant="outline" className="w-full justify-center border-white/30 text-white hover:bg-white hover:text-black mt-4 py-5 text-lg">
+              <Heart size={20} className="mr-2" />
+              Donate
+            </Button>
+          </Link>
         </div>
       )}
     </nav>
