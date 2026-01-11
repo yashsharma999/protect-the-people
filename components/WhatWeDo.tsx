@@ -11,7 +11,7 @@ const items = [
 
 export const WhatWeDo: React.FC = () => {
   return (
-    <section className="py-32 bg-white overflow-hidden">
+    <section className="py-32 bg-white overflow-hidden" id="about-us">
       <div className="container mx-auto px-6">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}

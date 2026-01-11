@@ -50,7 +50,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <nav className={`${navBaseClasses} ${navThemeClasses}`}>
-      <div className="container mx-auto flex items-center justify-between">
+      <div className="container mx-auto flex items-center justify-between px-4 py-4 md:py-0">
         
         {/* Logo Section */}
         <div className="flex items-center gap-2">
@@ -64,7 +64,7 @@ export const Navbar: React.FC = () => {
 
         {/* Center Navigation Links - Desktop */}
         <div className="hidden lg:flex items-center gap-10 absolute left-1/2 transform -translate-x-1/2">
-          {['How to help', 'About us', 'Our stories', 'Our projects', 'Map'].map((item) => (
+          {['How to help', 'About us', 'Our stories'].map((item) => (
             <a 
               key={item} 
               href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
@@ -99,18 +99,22 @@ export const Navbar: React.FC = () => {
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <div className="absolute top-full left-0 right-0 bg-[#0a0a0a]/95 backdrop-blur-3xl border-t border-white/10 p-8 flex flex-col gap-8 lg:hidden h-[calc(100vh-80px)] overflow-y-auto z-40">
-          {['How to help', 'About us', 'Our stories', 'Our projects', 'Map'].map((item) => (
+          {[
+            { label: 'How to help', href: '#how-to-help' },
+            { label: 'About us', href: '#about-us' },
+            { label: 'Our stories', href: '#our-stories' },
+          ].map((item) => (
             <a 
-              key={item} 
-              href="#" 
+              key={item.label} 
+              href={item.href} 
               className="text-white text-4xl font-serif font-light hover:text-accent transition-colors tracking-tight"
               onClick={() => setMobileMenuOpen(false)}
             >
-              {item}
+              {item.label}
             </a>
           ))}
           <div className="h-px w-full bg-white/10 my-4"></div>
-          <a href="#contact" className="text-white/80 text-2xl font-medium">Contact us</a>
+          <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-white/80 text-2xl font-medium">Contact us</a>
           <Button variant="outline" className="w-full justify-center border-white/30 text-white hover:bg-white hover:text-black mt-4 py-5 text-lg">
             <Heart size={20} className="mr-2" />
             Donate

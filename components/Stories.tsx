@@ -36,7 +36,7 @@ const stories = [
 
 export const Stories: React.FC = () => {
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-24 bg-gray-50" id="our-stories">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           
