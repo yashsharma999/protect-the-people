@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      // 2. Send confirmation email
+      // 2. Send notification email to admin
       if (process.env.RESEND_API_KEY && process.env.NOTIFICATION_EMAIL) {
         try {
           await resend.emails.send({
@@ -165,9 +165,91 @@ export async function POST(request: NextRequest) {
             `,
           });
 
-          console.log('✅ Confirmation email sent');
+          console.log('✅ Admin notification email sent');
         } catch (emailError) {
-          console.error('❌ Email error:', emailError);
+          console.error('❌ Admin email error:', emailError);
+        }
+      }
+
+      // 3. Send thank you email to donor
+      if (process.env.RESEND_API_KEY && body.donorInfo.email) {
+        try {
+          await resend.emails.send({
+            from: process.env.RESEND_FROM_EMAIL || 'Protect The People Foundation <onboarding@resend.dev>',
+            to: body.donorInfo.email,
+            subject: `Thank you for your donation of ₹${amountInRupees.toLocaleString('en-IN')} 💚`,
+            html: `
+              <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
+                <!-- Header -->
+                <div style="background: linear-gradient(135deg, #1a2e35 0%, #2d4a54 100%); padding: 40px 30px; text-align: center; border-radius: 12px 12px 0 0;">
+                  <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 600;">Thank You! 🙏</h1>
+                  <p style="color: rgba(255,255,255,0.8); margin: 10px 0 0 0; font-size: 16px;">Your generosity makes a difference</p>
+                </div>
+                
+                <!-- Amount Card -->
+                <div style="background: linear-gradient(135deg, #ccff00 0%, #a8e600 100%); padding: 30px; text-align: center; margin: -1px 0;">
+                  <p style="margin: 0; font-size: 14px; color: #1a2e35; opacity: 0.8;">Donation Amount</p>
+                  <p style="margin: 8px 0; font-size: 48px; font-weight: bold; color: #1a2e35;">₹${amountInRupees.toLocaleString('en-IN')}</p>
+                  <p style="margin: 0; font-size: 13px; color: #1a2e35; opacity: 0.7;">One-time donation</p>
+                </div>
+                
+                <!-- Message -->
+                <div style="padding: 30px;">
+                  <p style="color: #333; font-size: 16px; line-height: 1.7; margin: 0 0 20px 0;">
+                    Dear <strong>${body.donorInfo.fullName}</strong>,
+                  </p>
+                  <p style="color: #555; font-size: 15px; line-height: 1.7; margin: 0 0 20px 0;">
+                    On behalf of everyone at <strong>Protect The People Foundation</strong>, we want to express our heartfelt gratitude for your generous donation. Your support helps us continue our mission of empowering communities through education, food security, and human rights advocacy.
+                  </p>
+                  <p style="color: #555; font-size: 15px; line-height: 1.7; margin: 0 0 25px 0;">
+                    Every contribution, no matter the size, brings us one step closer to creating lasting change in the lives of those who need it most.
+                  </p>
+                  
+                  <!-- Receipt Box -->
+                  <div style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin: 25px 0;">
+                    <h3 style="margin: 0 0 15px 0; color: #1a2e35; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Payment Receipt</h3>
+                    <table style="width: 100%; font-size: 14px;">
+                      <tr>
+                        <td style="padding: 8px 0; color: #666;">Transaction ID</td>
+                        <td style="padding: 8px 0; color: #1a2e35; font-family: monospace; text-align: right;">${transactionId}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 8px 0; color: #666;">Payment Method</td>
+                        <td style="padding: 8px 0; color: #1a2e35; text-align: right;">${paymentMode}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 8px 0; color: #666;">Date</td>
+                        <td style="padding: 8px 0; color: #1a2e35; text-align: right;">${timestamp}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 8px 0; color: #666;">Order Reference</td>
+                        <td style="padding: 8px 0; color: #1a2e35; font-family: monospace; text-align: right; font-size: 12px;">${body.merchantOrderId}</td>
+                      </tr>
+                    </table>
+                  </div>
+                  
+                  <p style="color: #555; font-size: 15px; line-height: 1.7; margin: 25px 0 0 0;">
+                    With gratitude,<br>
+                    <strong style="color: #1a2e35;">The Protect The People Foundation Team</strong>
+                  </p>
+                </div>
+                
+                <!-- Footer -->
+                <div style="background: #f8f9fa; padding: 25px 30px; text-align: center; border-radius: 0 0 12px 12px; border-top: 1px solid #eee;">
+                  <p style="margin: 0 0 10px 0; color: #888; font-size: 13px;">
+                    Questions about your donation? Reply to this email or contact us.
+                  </p>
+                  <p style="margin: 0; color: #aaa; font-size: 12px;">
+                    © ${new Date().getFullYear()} Protect The People Foundation. All rights reserved.
+                  </p>
+                </div>
+              </div>
+            `,
+          });
+
+          console.log('✅ Donor thank you email sent to:', body.donorInfo.email);
+        } catch (emailError) {
+          console.error('❌ Donor email error:', emailError);
         }
       }
 

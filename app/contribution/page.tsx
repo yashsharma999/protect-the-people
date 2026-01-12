@@ -835,7 +835,7 @@ function VolunteerForm() {
       </button>
 
       <p className="text-center text-sm text-gray-500">
-        We'll review your application and contact you within 3-5 business days.
+        We'll review your application and contact you within 1-2 business days.
       </p>
     </form>
   );
