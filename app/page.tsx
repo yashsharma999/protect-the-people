@@ -33,7 +33,7 @@ export default function Home() {
                 </div>
             </div>
             <Reports />
-            <Profile />
+            {/* <Profile /> */}
         </div>
       </main>
       <Footer />
